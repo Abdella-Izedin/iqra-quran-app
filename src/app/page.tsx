@@ -1,7 +1,6 @@
 'use client';
 
 import WirdCard from '@/components/ui/WirdCard';
-import AthanSettingsCard from '@/components/ui/AthanSettingsCard';
 import FeatureCard from '@/components/ui/FeatureCard';
 import { useTranslations } from 'next-intl';
 
@@ -73,6 +72,13 @@ const PrayerIcon = () => (
   </svg>
 );
 
+// المنبهات - جرس
+const RemindersIcon = () => (
+  <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
+  </svg>
+);
+
 // الختمة - مصحف مع شريط
 const KhatmahIcon = () => (
   <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
@@ -119,6 +125,11 @@ export default function Home() {
       icon: <QiblaIcon />,
       title: t('qibla'),
     },
+    {
+      href: '/reminders',
+      icon: <RemindersIcon />,
+      title: t('reminders'),
+    },
   ];
 
   return (
@@ -126,11 +137,6 @@ export default function Home() {
       {/* بطاقة الورد اليومي */}
       <section className="mb-6">
         <WirdCard />
-      </section>
-
-      {/* بطاقة إعدادات الأذان */}
-      <section className="mb-10">
-        <AthanSettingsCard />
       </section>
 
       {/* شبكة الميزات */}

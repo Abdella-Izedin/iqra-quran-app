@@ -129,7 +129,7 @@ export function useNotifications() {
           allowWhileIdle: true,
         },
         sound: 'default',
-        smallIcon: 'ic_stat_icon_config_sample',
+        smallIcon: 'ic_stat_notification',
         largeIcon: 'ic_launcher',
         channelId: 'reminders',
         autoCancel: true,
@@ -236,7 +236,7 @@ export function useNotifications() {
           allowWhileIdle: true,
         },
         sound: 'default',
-        smallIcon: 'ic_stat_icon_config_sample',
+        smallIcon: 'ic_stat_notification',
         largeIcon: 'ic_launcher',
         channelId: 'reminders',
         autoCancel: true,
@@ -290,7 +290,7 @@ export function useNotifications() {
             allowWhileIdle: true,
           },
           sound: 'default',
-          smallIcon: 'ic_stat_icon_config_sample',
+          smallIcon: 'ic_stat_notification',
           largeIcon: 'ic_launcher',
           channelId: 'reminders',
           autoCancel: true,
@@ -410,3 +410,21 @@ export function getReminderSetting(reminderId: string): ReminderSettings | null 
   const settings = getReminderSettings();
   return settings[reminderId] || null;
 }
+
+// معلومات المنبهات للجدولة (عناوين ونصوص وأنواع)
+export const REMINDER_META: Record<string, {
+  title: string;
+  body: string;
+  scheduleType?: 'daily' | 'weekly-sunday' | 'weekly-wednesday' | 'white-days';
+}> = {
+  dailyWird: { title: 'الورد اليومي', body: 'حان وقت قراءة الورد اليومي من القرآن الكريم 📖' },
+  duha: { title: 'صلاة الضحى', body: 'لا تنسَ صلاة الضحى ☀️' },
+  morningAthkar: { title: 'أذكار الصباح', body: 'حان وقت أذكار الصباح 🌅' },
+  eveningAthkar: { title: 'أذكار المساء', body: 'حان وقت أذكار المساء 🌙' },
+  surahBaqarah: { title: 'سورة البقرة', body: 'تذكير بقراءة سورة البقرة 📿' },
+  surahMulk: { title: 'سورة الملك', body: 'لا تنسَ قراءة سورة الملك قبل النوم 🌟' },
+  mondayFasting: { title: 'صيام الاثنين', body: 'تذكير: غداً يوم الاثنين ✨ لا تنسَ صيامه اقتداءً بالنبي ﷺ', scheduleType: 'weekly-sunday' },
+  thursdayFasting: { title: 'صيام الخميس', body: 'تذكير: غداً يوم الخميس ✨ لا تنسَ صيامه اقتداءً بالنبي ﷺ', scheduleType: 'weekly-wednesday' },
+  witrPrayer: { title: 'صلاة الوتر', body: 'قم لصلاة الوتر 🌙 «أوتِروا فإنَّ الله وترٌ يحبُّ الوتر»' },
+  whiteDaysFasting: { title: 'صيام أيام البيض', body: 'تذكير: غداً يبدأ صيام أيام البيض (13، 14، 15) 🌕', scheduleType: 'white-days' },
+};

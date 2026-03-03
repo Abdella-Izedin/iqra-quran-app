@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { App } from '@capacitor/app';
 import BottomNavigation from "./BottomNavigation";
 import Header from "./Header";
+import ReminderRescheduler from "@/components/ReminderRescheduler";
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -38,6 +39,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
 
   return (
     <div className="max-w-lg mx-auto min-h-screen flex flex-col shadow-[0_0_40px_rgba(0,0,0,0.06)]">
+      <ReminderRescheduler />
       {!hideLayout && <Header />}
       <main className="flex-1 safe-area-bottom">
         {children}
