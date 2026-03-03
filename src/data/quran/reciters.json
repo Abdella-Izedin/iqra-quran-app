@@ -1,0 +1,204 @@
+{
+  "reciters": [
+    {
+      "id": 1,
+      "name": "عبدالباسط عبدالصمد",
+      "urduName": "عبد الباسط عبد الصمد",
+      "englishName": "Abdul Basit Abdul Samad",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server7.mp3quran.net/basit",
+      "sampleSurah": 1
+    },
+    {
+      "id": 2,
+      "name": "مشاري راشد العفاسي",
+      "urduName": "مشاری راشد العفاسی",
+      "englishName": "Mishary Rashid Alafasy",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server9.mp3quran.net/akrm",
+      "sampleSurah": 36
+    },
+    {
+      "id": 3,
+      "name": "محمود خليل الحصري",
+      "urduName": "محمود خلیل الحصری",
+      "englishName": "Mahmoud Khalil Al-Husary",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server13.mp3quran.net/husr",
+      "sampleSurah": 55
+    },
+    {
+      "id": 4,
+      "name": "محمد صديق المنشاوي",
+      "urduName": "محمد صدیق المنشاوی",
+      "englishName": "Mohamed Siddiq El-Minshawi",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server10.mp3quran.net/minsh",
+      "sampleSurah": 19
+    },
+    {
+      "id": 5,
+      "name": "ماهر المعيقلي",
+      "urduName": "ماہر المعیقلی",
+      "englishName": "Maher Al Muaiqly",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server12.mp3quran.net/maher",
+      "sampleSurah": 67
+    },
+    {
+      "id": 6,
+      "name": "سعود الشريم",
+      "urduName": "سعود الشریم",
+      "englishName": "Saud Al-Shuraim",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server7.mp3quran.net/shur",
+      "sampleSurah": 18
+    },
+    {
+      "id": 7,
+      "name": "عبدالرحمن السديس",
+      "urduName": "عبدالرحمٰن السدیس",
+      "englishName": "Abdul Rahman Al-Sudais",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server11.mp3quran.net/sds",
+      "sampleSurah": 2
+    },
+    {
+      "id": 8,
+      "name": "أحمد العجمي",
+      "urduName": "احمد بن علی العجمی",
+      "englishName": "Ahmed Al-Ajmi",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server10.mp3quran.net/ajm",
+      "sampleSurah": 56
+    },
+    {
+      "id": 9,
+      "name": "علي الحذيفي",
+      "urduName": "علی الحذیفی",
+      "englishName": "Ali Al-Hudhaify",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server9.mp3quran.net/hthfi",
+      "sampleSurah": 3
+    },
+    {
+      "id": 10,
+      "name": "محمد أيوب",
+      "urduName": "محمد ایوب",
+      "englishName": "Muhammad Ayyoub",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server8.mp3quran.net/ayyub",
+      "sampleSurah": 78
+    },
+    {
+      "id": 11,
+      "name": "هاني الرفاعي",
+      "urduName": "ہانی الرفاعی",
+      "englishName": "Hani Rifai",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server8.mp3quran.net/hani",
+      "sampleSurah": 87
+    },
+    {
+      "id": 12,
+      "name": "سعد الغامدي",
+      "urduName": "سعد الغامدی",
+      "englishName": "Saad Al-Ghamdi",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server7.mp3quran.net/s_gmd",
+      "sampleSurah": 12
+    },
+    {
+      "id": 13,
+      "name": "إبراهيم الأخضر",
+      "urduName": "ابراہیم الاخضر",
+      "englishName": "Ibrahim Akhdar",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server6.mp3quran.net/akdr",
+      "sampleSurah": 114
+    },
+    {
+      "id": 14,
+      "name": "محمد جبريل",
+      "urduName": "محمد جبریل",
+      "englishName": "Muhammad Jibreel",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server8.mp3quran.net/jbrl",
+      "sampleSurah": 1
+    },
+    {
+      "id": 15,
+      "name": "ياسر الدوسري",
+      "urduName": "یاسر الدوسری",
+      "englishName": "Yasser Al-Dosari",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server11.mp3quran.net/yasser",
+      "sampleSurah": 36
+    },
+    {
+      "id": 16,
+      "name": "عبدالله عواد الجهني",
+      "urduName": "عبداللہ عواد الجہنی",
+      "englishName": "Abdullah Awad Al-Juhani",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server13.mp3quran.net/jhn",
+      "sampleSurah": 55
+    },
+    {
+      "id": 17,
+      "name": "فارس عباد",
+      "urduName": "فارس عباد",
+      "englishName": "Fares Abbad",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server8.mp3quran.net/frs_a",
+      "sampleSurah": 67
+    },
+    {
+      "id": 18,
+      "name": "ناصر القطامي",
+      "urduName": "ناصر القطامی",
+      "englishName": "Nasser Al-Qatami",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server6.mp3quran.net/qtm",
+      "sampleSurah": 18
+    },
+    {
+      "id": 19,
+      "name": "بندر بليلة",
+      "urduName": "بندر بلیلہ",
+      "englishName": "Bandar Baleela",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server8.mp3quran.net/bna",
+      "sampleSurah": 2
+    },
+    {
+      "id": 20,
+      "name": "خالد الجليل",
+      "urduName": "خالد الجلیل",
+      "englishName": "Khalid Al-Jaleel",
+      "style": "مرتل",
+      "urduStyle": "مرتّل",
+      "audioUrl": "https://server10.mp3quran.net/jleel",
+      "sampleSurah": 19
+    }
+  ]
+}

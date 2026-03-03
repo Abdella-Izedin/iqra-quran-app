@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 60">
+  <!-- الخلفية الكريمية -->
+  <rect x="0" y="0" width="800" height="60" fill="#F5F5DC"/>
+  
+  <!-- الإطار الأخضر الخارجي -->
+  <rect x="2" y="2" width="796" height="56" fill="none" stroke="#2E7D32" stroke-width="3"/>
+  <rect x="6" y="6" width="788" height="48" fill="none" stroke="#4CAF50" stroke-width="1"/>
+  
+  <!-- الزخرفة اليسرى -->
+  <g transform="translate(20, 30)">
+    <!-- الشكل المركزي -->
+    <ellipse cx="40" cy="0" rx="35" ry="20" fill="none" stroke="#1B5E20" stroke-width="1.5"/>
+    <ellipse cx="40" cy="0" rx="28" ry="15" fill="none" stroke="#2E7D32" stroke-width="1"/>
+    <ellipse cx="40" cy="0" rx="20" ry="10" fill="none" stroke="#4CAF50" stroke-width="0.8"/>
+    
+    <!-- التفاصيل الداخلية -->
+    <circle cx="40" cy="0" r="8" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1"/>
+    <circle cx="40" cy="0" r="4" fill="#4CAF50"/>
+    
+    <!-- الأوراق الجانبية -->
+    <path d="M5,-15 Q20,0 5,15" fill="none" stroke="#2E7D32" stroke-width="1.5"/>
+    <path d="M75,-15 Q60,0 75,15" fill="none" stroke="#2E7D32" stroke-width="1.5"/>
+    
+    <!-- النقاط الزخرفية -->
+    <circle cx="8" cy="0" r="3" fill="#4CAF50"/>
+    <circle cx="72" cy="0" r="3" fill="#4CAF50"/>
+    <circle cx="40" cy="-18" r="2.5" fill="#2E7D32"/>
+    <circle cx="40" cy="18" r="2.5" fill="#2E7D32"/>
+    
+    <!-- تفاصيل إضافية -->
+    <path d="M20,-12 L40,0 L20,12" fill="none" stroke="#4CAF50" stroke-width="0.8"/>
+    <path d="M60,-12 L40,0 L60,12" fill="none" stroke="#4CAF50" stroke-width="0.8"/>
+  </g>
+  
+  <!-- الزخرفة اليمنى (معكوسة) -->
+  <g transform="translate(680, 30) scale(-1,1)">
+    <ellipse cx="40" cy="0" rx="35" ry="20" fill="none" stroke="#1B5E20" stroke-width="1.5"/>
+    <ellipse cx="40" cy="0" rx="28" ry="15" fill="none" stroke="#2E7D32" stroke-width="1"/>
+    <ellipse cx="40" cy="0" rx="20" ry="10" fill="none" stroke="#4CAF50" stroke-width="0.8"/>
+    
+    <circle cx="40" cy="0" r="8" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1"/>
+    <circle cx="40" cy="0" r="4" fill="#4CAF50"/>
+    
+    <path d="M5,-15 Q20,0 5,15" fill="none" stroke="#2E7D32" stroke-width="1.5"/>
+    <path d="M75,-15 Q60,0 75,15" fill="none" stroke="#2E7D32" stroke-width="1.5"/>
+    
+    <circle cx="8" cy="0" r="3" fill="#4CAF50"/>
+    <circle cx="72" cy="0" r="3" fill="#4CAF50"/>
+    <circle cx="40" cy="-18" r="2.5" fill="#2E7D32"/>
+    <circle cx="40" cy="18" r="2.5" fill="#2E7D32"/>
+    
+    <path d="M20,-12 L40,0 L20,12" fill="none" stroke="#4CAF50" stroke-width="0.8"/>
+    <path d="M60,-12 L40,0 L60,12" fill="none" stroke="#4CAF50" stroke-width="0.8"/>
+  </g>
+  
+  <!-- زخرفة الوسط الصغيرة -->
+  <g transform="translate(400, 30)">
+    <circle cx="0" cy="0" r="5" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1"/>
+    <circle cx="-15" cy="0" r="3" fill="#4CAF50"/>
+    <circle cx="15" cy="0" r="3" fill="#4CAF50"/>
+  </g>
+</svg>
