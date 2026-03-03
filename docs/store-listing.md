@@ -277,7 +277,7 @@ https://abdella-izedin.github.io/iqra-quran-app/privacy-policy.html
 izedin2026.g.play@gmail.com
 
 ## التصنيف
-Education (تعليم)
+Lifestyle (أسلوب حياة)
 
 ## علامات البحث (Tags)
 quran, islam, prayer, athkar, qibla, tasbeeh, muslim, athan, azkar, مصحف, قرآن, أذكار, صلاة
