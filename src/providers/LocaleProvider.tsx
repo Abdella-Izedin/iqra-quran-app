@@ -66,7 +66,7 @@ export function LocaleProvider({
   // Don't render children until mounted to prevent hydration mismatch
   if (!mounted) {
     return (
-      <NextIntlClientProvider locale={initialLocale} messages={initialMessages}>
+      <NextIntlClientProvider locale={initialLocale} messages={initialMessages} timeZone="Asia/Riyadh">
         {children}
       </NextIntlClientProvider>
     );
@@ -74,7 +74,7 @@ export function LocaleProvider({
 
   return (
     <LocaleContext.Provider value={{ locale, setLocale, isLoading }}>
-      <NextIntlClientProvider locale={locale} messages={currentMessages}>
+      <NextIntlClientProvider locale={locale} messages={currentMessages} timeZone="Asia/Riyadh">
         {children}
       </NextIntlClientProvider>
     </LocaleContext.Provider>

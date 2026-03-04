@@ -25,10 +25,9 @@ const toArabicNumber = (num: number): string => {
   return num.toString().split('').map(d => arabicNumerals[parseInt(d)]).join('');
 };
 
-// صور صفحات المصحف محلية - نفس المصدر المستخدم في المصحف
+// صور صفحات المصحف محلية - نفس المصدر المستخدم في المصحف (مصحف التجويد)
 const getMushafPageUrl = (pageNumber: number): string => {
-  const paddedNumber = String(pageNumber).padStart(3, '0');
-  return `/images/mushaf/${paddedNumber}.webp`;
+  return `/images/mushaf-tajweed/${pageNumber}.jpg`;
 };
 
 // Urdu translation options
