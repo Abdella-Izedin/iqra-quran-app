@@ -15,6 +15,16 @@
   <!-- Default fonts (Arabic) — other languages loaded dynamically -->
   <link id="dynamic-fonts" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri&family=Tajawal:wght@400;500;700&display=swap">
 
+  <!-- Prevent flash: detect theme before page renders -->
+  <script>
+    (function(){
+      var s = localStorage.getItem('feedbackTheme');
+      if (s === 'light' || (!s && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+        document.documentElement.classList.add('light');
+      }
+    })();
+  </script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -386,7 +396,153 @@
       .page-title { font-size: 20px; }
       .star svg { width: 30px; height: 30px; }
       .contact-btn { min-width: 80px; padding: 12px 8px; }
+      .whatsapp-fab { width: 50px; height: 50px; bottom: 18px; }
+      .whatsapp-fab svg { width: 24px; height: 24px; }
     }
+
+    /* === Theme Toggle === */
+    .theme-toggle {
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.25);
+      background: transparent; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s;
+      margin-inline-start: 4px; flex-shrink: 0;
+    }
+    .theme-toggle:hover { border-color: rgba(201,168,76,0.5); }
+    .theme-toggle svg { width: 18px; height: 18px; transition: all 0.3s; }
+    .theme-toggle .icon-sun { fill: #C9A84C; display: block; }
+    .theme-toggle .icon-moon { fill: #C9A84C; display: none; }
+
+    /* === WhatsApp FAB === */
+    .whatsapp-fab {
+      position: fixed; bottom: 24px;
+      inset-inline-start: 24px;
+      width: 56px; height: 56px;
+      background: #25D366; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(37,211,102,0.4);
+      z-index: 50; text-decoration: none;
+      transition: all 0.3s;
+      animation: fabPulse 2.5s ease-in-out infinite;
+    }
+    .whatsapp-fab:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 24px rgba(37,211,102,0.5);
+    }
+    .whatsapp-fab svg { width: 28px; height: 28px; fill: #fff; }
+    @keyframes fabPulse {
+      0%, 100% { box-shadow: 0 4px 16px rgba(37,211,102,0.4); }
+      50% { box-shadow: 0 4px 24px rgba(37,211,102,0.6), 0 0 0 10px rgba(37,211,102,0.08); }
+    }
+
+    /* ========================================= */
+    /* === Light Mode Overrides === */
+    /* ========================================= */
+    html.light body { background: #faf8f4; color: #2c3530; }
+    html.light .bg-pattern {
+      opacity: 0.05;
+      background-image:
+        radial-gradient(circle at 25% 25%, #0B6B4F 1px, transparent 1px),
+        radial-gradient(circle at 75% 75%, #0B6B4F 1px, transparent 1px),
+        radial-gradient(circle at 50% 50%, #C9A84C 1px, transparent 1px);
+    }
+    html.light .particle { background: #0B6B4F; }
+    html.light .lang-btn { color: #5a6a5f; border-color: rgba(11,107,79,0.2); }
+    html.light .lang-btn:hover { color: #2c3530; border-color: rgba(11,107,79,0.4); }
+    html.light .lang-btn.active {
+      background: linear-gradient(135deg, #0B6B4F, #085a42);
+      color: #fff; border-color: #0B6B4F;
+      box-shadow: 0 4px 15px rgba(11,107,79,0.25);
+    }
+    html.light .theme-toggle { border-color: rgba(11,107,79,0.2); }
+    html.light .theme-toggle:hover { border-color: rgba(11,107,79,0.4); }
+    html.light .theme-toggle .icon-sun { display: none; }
+    html.light .theme-toggle .icon-moon { display: block; fill: #0B6B4F; }
+    html.light .app-icon { box-shadow: 0 8px 30px rgba(11,107,79,0.15); }
+    html.light .bismillah { color: #0B6B4F; }
+    html.light .diamond { background: #0B6B4F; }
+    html.light .divider::before, html.light .divider::after {
+      background: linear-gradient(to right, transparent, #0B6B4F, transparent);
+    }
+    html.light .page-title { color: #1a2a1a; }
+    html.light .gold { color: #0B6B4F; }
+    html.light .subtitle { color: #5a6a5f; }
+    html.light .form-card {
+      background: rgba(255,255,255,0.85);
+      border-color: rgba(11,107,79,0.1);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+    html.light .form-card::before {
+      background: linear-gradient(to right, transparent, #0B6B4F, transparent);
+    }
+    html.light .section-label { color: #4a5a4f; }
+    html.light .star svg { fill: #e8e0d0; stroke: #d8d0c0; }
+    html.light .star.active svg {
+      fill: #C9A84C; stroke: #C9A84C;
+      filter: drop-shadow(0 0 6px rgba(201,168,76,0.35));
+    }
+    html.light .chip {
+      border-color: rgba(11,107,79,0.15);
+      background: rgba(11,107,79,0.04);
+      color: #5a6a5f;
+    }
+    html.light .chip:hover { border-color: rgba(11,107,79,0.3); color: #2c3530; }
+    html.light .chip.active {
+      background: rgba(11,107,79,0.1);
+      border-color: rgba(11,107,79,0.5);
+      color: #0B6B4F;
+    }
+    html.light .field label { color: #4a5a4f; }
+    html.light .field .opt { color: #8a9a8f; }
+    html.light .field .req { color: #0B6B4F; }
+    html.light .field input, html.light .field textarea {
+      background: rgba(0,0,0,0.03);
+      border-color: rgba(11,107,79,0.12);
+      color: #2c3530;
+    }
+    html.light .field input:focus, html.light .field textarea:focus {
+      border-color: #0B6B4F;
+      box-shadow: 0 0 0 3px rgba(11,107,79,0.08);
+    }
+    html.light .field input::placeholder, html.light .field textarea::placeholder { color: #b0b8b0; }
+    html.light .char-counter { color: #b0b8b0; }
+    html.light .device-info { color: #b0b8b0; }
+    html.light .device-info svg { fill: #b0b8b0; }
+    html.light .submit-btn {
+      background: linear-gradient(135deg, #0B6B4F, #085a42);
+      color: #fff;
+    }
+    html.light .submit-btn:hover:not(:disabled) {
+      box-shadow: 0 8px 25px rgba(11,107,79,0.3);
+    }
+    html.light .success-overlay { background: rgba(250,248,244,0.97); }
+    html.light .success-check { background: linear-gradient(135deg, #0B6B4F, #085a42); }
+    html.light .success-check svg { stroke: #fff; }
+    html.light .success-title { color: #0B6B4F; }
+    html.light .success-msg { color: #5a6a5f; }
+    html.light .new-feedback-btn {
+      border-color: rgba(11,107,79,0.4); color: #0B6B4F;
+    }
+    html.light .new-feedback-btn:hover { background: rgba(11,107,79,0.06); }
+    html.light .image-hint {
+      color: #5a6a5f;
+      background: rgba(11,107,79,0.04);
+      border-color: rgba(11,107,79,0.15);
+    }
+    html.light .contact-title { color: #5a6a5f; }
+    html.light .contact-btn {
+      border-color: rgba(11,107,79,0.1);
+      background: rgba(255,255,255,0.7);
+    }
+    html.light .contact-btn:hover {
+      background: rgba(255,255,255,0.9);
+      border-color: rgba(11,107,79,0.25);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    html.light .contact-btn .c-label { color: #4a5a4f; }
+    html.light .footer p { color: #8a9a8f; }
+    html.light .download-btn { color: #fff; }
   </style>
 </head>
 <body>
@@ -402,6 +558,10 @@
     <button class="lang-btn active" data-lang="ar">العربية</button>
     <button class="lang-btn" data-lang="ur">اردو</button>
     <button class="lang-btn" data-lang="en">English</button>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <svg class="icon-sun" viewBox="0 0 24 24"><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79zM4 10.5H1v2h3zm9-9.95h-2V3.5h2zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79zM20 10.5v2h3v-2zM12 5.5a6 6 0 100 12 6 6 0 000-12zm-1 16.95h2V19.5h-2zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41z"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
   </div>
 
   <div class="container">
@@ -515,6 +675,11 @@
       </a>
     </footer>
   </div>
+
+  <!-- WhatsApp FAB -->
+  <a href="https://wa.me/qr/CULVDKUOHL3VO1" target="_blank" rel="noopener" class="whatsapp-fab" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
 
   <!-- Toast -->
   <div class="toast" id="toast"></div>
@@ -928,6 +1093,14 @@ function resetForm() {
 // ==============================
 // التهيئة — Initialize
 // ==============================
+// ==============================
+// تبديل الثيم — Theme Toggle
+// ==============================
+function toggleTheme() {
+  html.classList.toggle('light');
+  localStorage.setItem('feedbackTheme', html.classList.contains('light') ? 'light' : 'dark');
+}
+
 function init() {
   createParticles();
   initStars();
@@ -937,6 +1110,8 @@ function init() {
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
   });
+
+  $('themeToggle').addEventListener('click', toggleTheme);
 
   $('feedbackForm').addEventListener('submit', handleSubmit);
 
