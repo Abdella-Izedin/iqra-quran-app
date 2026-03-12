@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ملاحظات تطبيق إقرأ</title>
+
+  <!-- Open Graph / WhatsApp Preview -->
+  <meta property="og:title" content="ملاحظاتكم تطوّر تطبيق إقرأ">
+  <meta property="og:description" content="شاركونا آراءكم واقتراحاتكم لتطوير تطبيق إقرأ للقرآن الكريم">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://raw.githubusercontent.com/Abdella-Izedin/iqra-quran-app/main/public/icons/icon-512x512.png">
+  <meta property="og:locale" content="ar_SA">
+
+  <!-- Default fonts (Arabic) — other languages loaded dynamically -->
+  <link id="dynamic-fonts" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri&family=Tajawal:wght@400;500;700&display=swap">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #020C08;
+      color: #e0e0e0;
+      min-height: 100vh;
+      font-family: 'Tajawal', sans-serif;
+      line-height: 1.7;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    html[lang="ur"] body { font-family: 'Noto Nastaliq Urdu', serif; line-height: 2; }
+    html[lang="en"] body { font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; line-height: 1.6; }
+
+    /* === Islamic Background Pattern === */
+    .bg-pattern {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      opacity: 0.04;
+      background-image:
+        radial-gradient(circle at 25% 25%, #C9A84C 1px, transparent 1px),
+        radial-gradient(circle at 75% 75%, #C9A84C 1px, transparent 1px),
+        radial-gradient(circle at 50% 50%, #0B6B4F 1.5px, transparent 1.5px);
+      background-size: 60px 60px, 60px 60px, 40px 40px;
+      background-position: 0 0, 30px 30px, 15px 15px;
+    }
+
+    /* === Particles === */
+    .particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .particle {
+      position: absolute;
+      background: #C9A84C;
+      border-radius: 50%;
+      opacity: 0;
+      animation: particleFloat linear infinite;
+    }
+    @keyframes particleFloat {
+      0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+      10% { opacity: 0.35; }
+      90% { opacity: 0.35; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+    @media (max-width: 768px) { .particles { display: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .particles { display: none; }
+      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* === Layout === */
+    .container { max-width: 720px; margin: 0 auto; padding: 0 16px 40px; position: relative; z-index: 1; }
+
+    /* === Language Switcher === */
+    .lang-switcher {
+      display: flex; justify-content: center; gap: 8px;
+      padding: 16px 16px 8px;
+      position: relative; z-index: 2;
+    }
+    .lang-btn {
+      padding: 7px 22px; border-radius: 24px;
+      border: 1px solid rgba(201,168,76,0.25);
+      background: transparent; color: #7a8a7f;
+      cursor: pointer; font-size: 14px;
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+    .lang-btn:hover { border-color: rgba(201,168,76,0.5); color: #b0b0b0; }
+    .lang-btn.active {
+      background: linear-gradient(135deg, #C9A84C, #B8913F);
+      color: #020C08; border-color: #C9A84C;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(201,168,76,0.25);
+    }
+
+    /* === Header === */
+    .header { text-align: center; padding: 24px 0 28px; }
+    .app-icon {
+      width: 72px; height: 72px;
+      background: linear-gradient(135deg, #0B6B4F, #085a42);
+      border-radius: 22px;
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 30px rgba(11,107,79,0.3);
+      animation: fadeSlideDown 0.6s ease both;
+    }
+    .app-icon svg { width: 38px; height: 38px; }
+
+    .bismillah {
+      font-family: 'Amiri', serif;
+      color: #C9A84C;
+      font-size: 26px;
+      margin: 12px 0;
+      animation: fadeSlideDown 0.6s ease 0.1s both;
+    }
+    html[lang="en"] .bismillah { font-family: 'Amiri', serif; font-size: 20px; }
+
+    .divider {
+      display: flex; align-items: center; justify-content: center; gap: 14px;
+      margin: 14px auto; max-width: 240px;
+      animation: fadeSlideDown 0.6s ease 0.2s both;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(to var(--line-dir, right), transparent, #C9A84C, transparent);
+    }
+    .diamond { width: 7px; height: 7px; background: #C9A84C; transform: rotate(45deg); flex-shrink: 0; }
+
+    .page-title {
+      font-size: 24px; color: #fff; margin-bottom: 8px; font-weight: 700;
+      animation: fadeSlideDown 0.6s ease 0.3s both;
+    }
+    .gold { color: #C9A84C; }
+    .subtitle {
+      color: #7a8a7f; font-size: 15px; max-width: 500px; margin: 0 auto;
+      animation: fadeSlideDown 0.6s ease 0.4s both;
+    }
+
+    /* === Form Card === */
+    .form-card {
+      background: rgba(11,107,79,0.07);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(201,168,76,0.12);
+      border-radius: 20px;
+      padding: 28px 24px;
+      margin-bottom: 24px;
+      position: relative; overflow: hidden;
+      animation: fadeSlideUp 0.7s ease 0.5s both;
+    }
+    .form-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(to right, transparent, #C9A84C, transparent);
+    }
+
+    /* === Section Label === */
+    .section-label {
+      color: #8a9a8f; font-size: 14px; margin-bottom: 10px; font-weight: 500;
+    }
+
+    /* === Star Rating === */
+    .stars-wrapper { margin-bottom: 20px; }
+    .stars { display: flex; gap: 6px; justify-content: center; margin: 10px 0 6px; direction: ltr; }
+    .star {
+      cursor: pointer; transition: transform 0.2s;
+      padding: 4px;
+    }
+    .star svg {
+      width: 34px; height: 34px;
+      fill: #1a2a22; stroke: #2a3a30; stroke-width: 1;
+      transition: all 0.25s;
+    }
+    .star.active svg {
+      fill: #C9A84C; stroke: #C9A84C;
+      filter: drop-shadow(0 0 8px rgba(201,168,76,0.45));
+    }
+    .star:hover svg { transform: scale(1.15); }
+    .rating-text {
+      text-align: center; color: #C9A84C; font-size: 14px;
+      min-height: 22px; margin-top: 4px;
+      transition: opacity 0.2s;
+    }
+
+    /* === Category Chips === */
+    .chips-wrapper { margin-bottom: 20px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 10px; }
+    .chip {
+      padding: 7px 16px; border-radius: 20px;
+      border: 1px solid rgba(201,168,76,0.18);
+      background: rgba(201,168,76,0.04);
+      color: #7a8a7f; cursor: pointer;
+      font-size: 13px; font-family: inherit;
+      transition: all 0.25s; white-space: nowrap;
+    }
+    .chip:hover { border-color: rgba(201,168,76,0.4); color: #a0a0a0; }
+    .chip.active {
+      background: rgba(201,168,76,0.12);
+      border-color: rgba(201,168,76,0.6);
+      color: #C9A84C;
+    }
+
+    /* === Form Fields === */
+    .field { margin-bottom: 16px; }
+    .field label {
+      display: block; color: #7a8a7f; font-size: 14px;
+      margin-bottom: 6px; font-weight: 500;
+    }
+    .field .req { color: #C9A84C; margin-inline-start: 2px; }
+    .field .opt { color: #4a5a4f; font-size: 12px; font-weight: 400; }
+
+    .field input, .field textarea {
+      width: 100%; padding: 12px 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,168,76,0.12);
+      border-radius: 12px;
+      color: #e0e0e0; font-size: 15px;
+      font-family: inherit;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      outline: none;
+    }
+    .field input:focus, .field textarea:focus {
+      border-color: rgba(201,168,76,0.5);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.08);
+    }
+    .field input::placeholder, .field textarea::placeholder { color: #3a4a3f; }
+    .field textarea { min-height: 130px; resize: vertical; }
+    .email-field input { direction: ltr; text-align: left; }
+
+    .char-counter {
+      display: flex; justify-content: flex-end;
+      color: #3a4a3f; font-size: 12px; margin-top: 4px;
+    }
+    .char-counter.warn { color: #e0a030; }
+    .char-counter.limit { color: #e74c3c; }
+
+    .field-error {
+      color: #e74c3c; font-size: 13px; margin-top: 5px;
+      display: none;
+    }
+    .field.has-error .field-error { display: block; }
+    .field.has-error textarea, .field.has-error input {
+      border-color: rgba(231,76,60,0.5);
+    }
+
+    /* === Device Info === */
+    .device-info {
+      display: flex; align-items: center; gap: 6px;
+      color: #3a4a3f; font-size: 12px; margin-bottom: 18px;
+    }
+    .device-info svg { width: 14px; height: 14px; fill: #3a4a3f; }
+
+    /* === Submit Button === */
+    .submit-btn {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, #0B6B4F, #085a42);
+      color: #C9A84C; border: none; border-radius: 12px;
+      font-size: 16px; font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .submit-btn:hover:not(:disabled) {
+      box-shadow: 0 8px 25px rgba(11,107,79,0.4);
+      transform: translateY(-2px);
+    }
+    .submit-btn:active:not(:disabled) { transform: translateY(0); }
+    .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .spinner {
+      display: inline-block; width: 20px; height: 20px;
+      border: 2.5px solid rgba(201,168,76,0.3);
+      border-top-color: #C9A84C;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+    }
+
+    /* === Success Overlay === */
+    .success-overlay {
+      position: absolute; inset: 0;
+      background: rgba(2,12,8,0.96);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s;
+      z-index: 10; border-radius: 20px;
+      padding: 24px;
+    }
+    .success-overlay.show { opacity: 1; pointer-events: all; }
+    .success-check {
+      width: 68px; height: 68px; border-radius: 50%;
+      background: linear-gradient(135deg, #0B6B4F, #085a42);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px;
+    }
+    .success-overlay.show .success-check { animation: scaleIn 0.5s ease; }
+    .success-check svg { width: 32px; height: 32px; stroke: #C9A84C; fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .success-title { color: #C9A84C; font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+    .success-msg { color: #7a8a7f; font-size: 15px; margin-bottom: 22px; text-align: center; }
+    .new-feedback-btn {
+      padding: 10px 30px;
+      background: transparent;
+      border: 1px solid rgba(201,168,76,0.4);
+      color: #C9A84C; border-radius: 24px;
+      cursor: pointer; font-size: 14px;
+      font-family: inherit;
+      transition: all 0.3s;
+    }
+    .new-feedback-btn:hover { background: rgba(201,168,76,0.08); }
+
+    /* === Rate Limit Toast === */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
+      background: rgba(231,76,60,0.9); color: #fff;
+      padding: 12px 24px; border-radius: 12px;
+      font-size: 14px; z-index: 100;
+      transition: transform 0.4s ease;
+      text-align: center; max-width: 90%;
+      backdrop-filter: blur(8px);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.success { background: rgba(11,107,79,0.9); }
+
+    /* === Image Hint === */
+    .image-hint {
+      text-align: center; color: #5a6a5f; font-size: 13px;
+      margin-bottom: 14px; padding: 10px 16px;
+      background: rgba(201,168,76,0.04);
+      border: 1px dashed rgba(201,168,76,0.15);
+      border-radius: 12px;
+      animation: fadeSlideUp 0.7s ease 0.55s both;
+    }
+
+    /* === Contact Section === */
+    .contact-section {
+      text-align: center; margin-bottom: 24px;
+      animation: fadeSlideUp 0.7s ease 0.6s both;
+    }
+    .contact-title { color: #5a6a5f; font-size: 15px; margin-bottom: 16px; }
+    .contact-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .contact-btn {
+      flex: 1; min-width: 90px; max-width: 180px;
+      padding: 16px 12px; border-radius: 16px;
+      border: 1px solid rgba(201,168,76,0.1);
+      background: rgba(11,107,79,0.06);
+      text-decoration: none;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 8px;
+      transition: all 0.3s;
+    }
+    .contact-btn:hover {
+      background: rgba(11,107,79,0.12);
+      border-color: rgba(201,168,76,0.25);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+    .contact-btn .c-icon { font-size: 26px; }
+    .contact-btn .c-label { color: #6a7a6f; font-size: 13px; }
+
+    /* === Footer === */
+    .footer {
+      text-align: center; padding: 8px 0 32px;
+      animation: fadeSlideUp 0.7s ease 0.7s both;
+    }
+    .footer p { color: #3a4a3f; font-size: 13px; margin-bottom: 6px; }
+    .download-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 28px; margin-top: 14px;
+      background: linear-gradient(135deg, #0B6B4F, #085a42);
+      color: #C9A84C; text-decoration: none;
+      border-radius: 24px; font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    .download-btn:hover {
+      box-shadow: 0 6px 20px rgba(11,107,79,0.35);
+      transform: translateY(-2px);
+    }
+    .download-btn svg { width: 18px; height: 18px; fill: #C9A84C; }
+
+    /* === Animations === */
+    @keyframes fadeSlideDown { from { opacity: 0; transform: translateY(-18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes scaleIn { from { transform: scale(0); } 60% { transform: scale(1.15); } to { transform: scale(1); } }
+
+    /* === Responsive === */
+    @media (max-width: 480px) {
+      .form-card { padding: 22px 16px; }
+      .bismillah { font-size: 21px; }
+      .page-title { font-size: 20px; }
+      .star svg { width: 30px; height: 30px; }
+      .contact-btn { min-width: 80px; padding: 12px 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Pattern -->
+  <div class="bg-pattern" aria-hidden="true"></div>
+
+  <!-- Particles -->
+  <div class="particles" id="particles" aria-hidden="true"></div>
+
+  <!-- Language Switcher -->
+  <div class="lang-switcher">
+    <button class="lang-btn active" data-lang="ar">العربية</button>
+    <button class="lang-btn" data-lang="ur">اردو</button>
+    <button class="lang-btn" data-lang="en">English</button>
+  </div>
+
+  <div class="container">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="app-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M8 10C8 8.9 8.9 8 10 8h4l2-2h16l2 2h4c1.1 0 2 .9 2 2v28c0 1.1-.9 2-2 2H10c-1.1 0-2-.9-2-2V10z" stroke="#C9A84C" stroke-width="2" fill="none"/>
+          <path d="M24 8v32M24 8c-4 3-8 4-12 4v20c4 0 8-1 12-4M24 8c4 3 8 4 12 4v20c-4 0-8-1-12-4" stroke="#C9A84C" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+      <div class="bismillah" id="bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+      <div class="divider"><div class="diamond"></div></div>
+      <h1 class="page-title" id="pageTitle">تطبيق <span class="gold">إقرأ</span> للقرآن الكريم</h1>
+      <p class="subtitle" id="subtitle">ملاحظاتكم واقتراحاتكم تساهم في تطوير التطبيق ليخدم كتاب الله بأفضل صورة</p>
+    </header>
+
+    <!-- Form Card -->
+    <div class="form-card">
+      <!-- Success Overlay -->
+      <div class="success-overlay" id="successOverlay">
+        <div class="success-check">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="success-title" id="successTitle">جزاكم الله خيراً</div>
+        <div class="success-msg" id="successMsg">تم إرسال ملاحظتكم بنجاح</div>
+        <button class="new-feedback-btn" id="newFeedbackBtn" onclick="resetForm()">إرسال ملاحظة أخرى</button>
+      </div>
+
+      <form id="feedbackForm" novalidate aria-label="feedback form">
+        <!-- Star Rating -->
+        <div class="stars-wrapper">
+          <div class="section-label" id="rateLabel">كيف تقيّمون التطبيق؟</div>
+          <div class="stars" id="stars">
+            <span class="star" data-value="1"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+            <span class="star" data-value="2"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+            <span class="star" data-value="3"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+            <span class="star" data-value="4"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+            <span class="star" data-value="5"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+          </div>
+          <div class="rating-text" id="ratingText"></div>
+        </div>
+
+        <!-- Category Chips -->
+        <div class="chips-wrapper">
+          <div class="section-label" id="categoryLabel">نوع الملاحظة</div>
+          <div class="chips" id="chips"></div>
+        </div>
+
+        <!-- Name -->
+        <div class="field">
+          <label id="nameLabel">الاسم <span class="opt" id="nameOpt">(اختياري)</span></label>
+          <input type="text" id="nameInput" autocomplete="name">
+        </div>
+
+        <!-- Email -->
+        <div class="field email-field">
+          <label id="emailLabel">البريد الإلكتروني <span class="opt" id="emailOpt">(اختياري)</span></label>
+          <input type="email" id="emailInput" autocomplete="email" dir="ltr" style="text-align:left">
+        </div>
+
+        <!-- Feedback -->
+        <div class="field" id="feedbackField">
+          <label id="feedbackLabel">ملاحظتك <span class="req">*</span></label>
+          <textarea id="feedbackInput" maxlength="2000" aria-required="true"></textarea>
+          <div class="char-counter" id="charCounter">0/2000</div>
+          <div class="field-error" id="feedbackError">يرجى كتابة ملاحظتك</div>
+        </div>
+
+        <!-- Device -->
+        <div class="device-info" id="deviceInfo">
+          <svg viewBox="0 0 24 24"><path d="M17 1H7c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm0 18H7V5h10v14z"/></svg>
+          <span id="deviceText"></span>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <span id="submitText">إرسال الملاحظة</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="contact-section">
+      <p class="image-hint" id="imageHint">📸 إذا كان لديك صورة توضّح ملاحظتك، أرسلها عبر واتساب أو تلقرام</p>
+      <div class="contact-title" id="contactTitle">أو تواصلوا معنا مباشرة</div>
+      <div class="contact-buttons">
+        <a href="https://wa.me/qr/CULVDKUOHL3VO1" target="_blank" rel="noopener" class="contact-btn">
+          <span class="c-icon">💬</span>
+          <span class="c-label" data-key="whatsapp">واتساب</span>
+        </a>
+        <a href="https://t.me/izedin2022" target="_blank" rel="noopener" class="contact-btn">
+          <span class="c-icon">✈️</span>
+          <span class="c-label" data-key="telegram">تلقرام</span>
+        </a>
+        <a href="mailto:izedin2017@gmail.com" class="contact-btn">
+          <span class="c-icon">✉️</span>
+          <span class="c-label" data-key="email">إيميل</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p id="devBy">تطوير: عبدالله عزالدين الكناني</p>
+      <p id="dua">نسأل الله أن يجعله صدقة جارية</p>
+      <a href="https://play.google.com/store/apps/details?id=com.iqra.quran.app" target="_blank" rel="noopener" class="download-btn" id="downloadBtn">
+        <svg viewBox="0 0 24 24"><path d="M3 20.5v-17c0-.83.52-1.28 1-1.5l10 10-10 10c-.48-.22-1-.67-1-1.5zm15.54-8.27l-2.6-1.52L13.07 13.5l2.87 2.79 2.6-1.52c.72-.41.72-1.13 0-1.54zM5.1 3.27L14 12 5.1 20.73c.13.07.27.12.4.17l10.5-6.13L5.5 3.1c-.13.05-.27.1-.4.17zM14 12L5.1 3.27 15.53 8.7 14 12z"/></svg>
+        <span id="downloadText">حمّل التطبيق</span>
+      </a>
+    </footer>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+<script>
+// ==============================
+// التهيئة — Configuration
+// ==============================
+
+// ⚠️ غيّر هذا الرابط برابط Google Apps Script الخاص بك
+// ⚠️ Replace this URL with your Google Apps Script Web App URL
+const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+const RATE_LIMIT_MS = 3 * 60 * 1000; // 3 دقائق بين كل إرسال
+
+// ==============================
+// الترجمات — Translations
+// ==============================
+const T = {
+  ar: {
+    pageTitle: 'ملاحظات تطبيق إقرأ',
+    bismillah: 'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ',
+    title: 'تطبيق <span class="gold">إقرأ</span> للقرآن الكريم',
+    subtitle: 'ملاحظاتكم واقتراحاتكم تساهم في تطوير التطبيق ليخدم كتاب الله بأفضل صورة',
+    rateLabel: 'كيف تقيّمون التطبيق؟',
+    ratings: ['', 'ضعيف', 'مقبول', 'جيد', 'ممتاز', 'رائع ما شاء الله'],
+    categoryLabel: 'نوع الملاحظة',
+    categories: ['💡 اقتراح ميزة', '🐛 بلاغ عن خطأ', '🎯 سهولة الاستخدام', '📖 محتوى قرآني', '✨ أخرى'],
+    nameLabel: 'الاسم', nameOpt: '(اختياري)',
+    namePlaceholder: 'اسمكم الكريم',
+    emailLabel: 'البريد الإلكتروني', emailOpt: '(اختياري)',
+    emailPlaceholder: 'example@email.com',
+    feedbackLabel: 'ملاحظتك', feedbackReq: '*',
+    feedbackPlaceholder: 'اكتب ملاحظتك أو اقتراحك هنا...',
+    feedbackError: 'يرجى كتابة ملاحظتك',
+    charUnit: 'حرف',
+    submitBtn: 'إرسال الملاحظة',
+    submitting: 'جاري الإرسال...',
+    successTitle: 'جزاكم الله خيراً',
+    successMsg: 'تم إرسال ملاحظتكم بنجاح، نسأل الله أن ينفع بها',
+    newFeedback: 'إرسال ملاحظة أخرى',
+    contactTitle: 'أو تواصلوا معنا مباشرة',
+    whatsapp: 'واتساب', telegram: 'تلقرام', email: 'إيميل',
+    imageHint: '📸 إذا كان لديك صورة توضّح ملاحظتك، أرسلها عبر واتساب أو تلقرام',
+    devBy: 'تطوير: عبدالله عزالدين الكناني',
+    dua: 'نسأل الله أن يجعله صدقة جارية',
+    downloadBtn: 'حمّل التطبيق',
+    rateLimitMsg: 'يرجى الانتظار قليلاً قبل إرسال ملاحظة أخرى',
+    errorMsg: 'حدث خطأ، يرجى المحاولة مرة أخرى',
+    deviceLabel: 'جهازكم'
+  },
+  ur: {
+    pageTitle: 'اقرأ ایپ کی آراء',
+    bismillah: 'بِسْمِ اللَّہِ الرَّحْمَنِ الرَّحِیمِ',
+    title: 'ایپ <span class="gold">اقرأ</span> برائے قرآن کریم',
+    subtitle: 'آپ کی رائے اور تجاویز ایپ کو بہتر بنانے میں مدد کرتی ہیں تاکہ کتاب اللہ کی بہترین خدمت ہو سکے',
+    rateLabel: 'آپ ایپ کو کیسے ریٹ کریں گے؟',
+    ratings: ['', 'کمزور', 'قابل قبول', 'اچھا', 'بہترین', 'ماشاء اللہ لاجواب'],
+    categoryLabel: 'رائے کی قسم',
+    categories: ['💡 فیچر تجویز', '🐛 خرابی کی اطلاع', '🎯 استعمال میں آسانی', '📖 قرآنی مواد', '✨ دیگر'],
+    nameLabel: 'نام', nameOpt: '(اختیاری)',
+    namePlaceholder: 'آپ کا نام',
+    emailLabel: 'ای میل', emailOpt: '(اختیاری)',
+    emailPlaceholder: 'example@email.com',
+    feedbackLabel: 'آپ کی رائے', feedbackReq: '*',
+    feedbackPlaceholder: 'اپنی رائے یا تجویز یہاں لکھیں...',
+    feedbackError: 'براہ کرم اپنی رائے لکھیں',
+    charUnit: 'حروف',
+    submitBtn: 'رائے بھیجیں',
+    submitting: 'بھیجا جا رہا ہے...',
+    successTitle: 'جزاکم اللہ خیراً',
+    successMsg: 'آپ کی رائے کامیابی سے بھیج دی گئی، اللہ اسے نفع بخش بنائے',
+    newFeedback: 'ایک اور رائے بھیجیں',
+    contactTitle: 'یا براہ راست ہم سے رابطہ کریں',
+    whatsapp: 'واٹس ایپ', telegram: 'ٹیلیگرام', email: 'ای میل',
+    imageHint: '📸 اگر آپ کے پاس تصویر ہے تو واٹس ایپ یا ٹیلیگرام پر بھیجیں',
+    devBy: 'تیار کردہ: عبداللہ عزالدین الکنانی',
+    dua: 'ہم اللہ سے دعا کرتے ہیں کہ اسے صدقہ جاریہ بنائے',
+    downloadBtn: 'ایپ ڈاؤنلوڈ کریں',
+    rateLimitMsg: 'براہ کرم دوبارہ بھیجنے سے پہلے تھوڑا انتظار کریں',
+    errorMsg: 'ایک خرابی ہوئی، براہ کرم دوبارہ کوشش کریں',
+    deviceLabel: 'آپ کا آلہ'
+  },
+  en: {
+    pageTitle: 'Iqra App Feedback',
+    bismillah: 'In the name of Allah, the Most Gracious, the Most Merciful',
+    title: '<span class="gold">Iqra</span> Quran App',
+    subtitle: 'Your feedback and suggestions help us improve the app to better serve the Holy Quran',
+    rateLabel: 'How would you rate the app?',
+    ratings: ['', 'Poor', 'Fair', 'Good', 'Excellent', 'Outstanding MashaAllah'],
+    categoryLabel: 'Feedback Type',
+    categories: ['💡 Feature Suggestion', '🐛 Bug Report', '🎯 Usability', '📖 Quranic Content', '✨ Other'],
+    nameLabel: 'Name', nameOpt: '(optional)',
+    namePlaceholder: 'Your name',
+    emailLabel: 'Email', emailOpt: '(optional)',
+    emailPlaceholder: 'example@email.com',
+    feedbackLabel: 'Your Feedback', feedbackReq: '*',
+    feedbackPlaceholder: 'Write your feedback or suggestion here...',
+    feedbackError: 'Please write your feedback',
+    charUnit: 'characters',
+    submitBtn: 'Submit Feedback',
+    submitting: 'Submitting...',
+    successTitle: 'JazakAllahu Khairan',
+    successMsg: 'Your feedback has been submitted successfully. May Allah benefit from it.',
+    newFeedback: 'Submit Another Feedback',
+    contactTitle: 'Or contact us directly',
+    whatsapp: 'WhatsApp', telegram: 'Telegram', email: 'Email',
+    imageHint: '📸 If you have a screenshot, send it via WhatsApp or Telegram',
+    devBy: 'Developed by: Abdullah Izedin Al-Kinani',
+    dua: 'We ask Allah to make this a Sadaqah Jariyah',
+    downloadBtn: 'Download App',
+    rateLimitMsg: 'Please wait a moment before submitting again',
+    errorMsg: 'An error occurred, please try again',
+    deviceLabel: 'Your device'
+  }
+};
+
+const CATEGORY_VALUES = ['feature', 'bug', 'usability', 'quran_content', 'other'];
+
+// ==============================
+// الحالة — State
+// ==============================
+let currentLang = localStorage.getItem('feedbackLang') || 'ar';
+let selectedRating = 0;
+let selectedCategory = '';
+
+// ==============================
+// العناصر — Elements
+// ==============================
+const $ = (id) => document.getElementById(id);
+const html = document.documentElement;
+
+// ==============================
+// كشف الجهاز — Device Detection
+// ==============================
+function detectDevice() {
+  const ua = navigator.userAgent;
+  if (/iPad/i.test(ua) || (navigator.maxTouchPoints > 1 && /Macintosh/i.test(ua))) return 'iPad';
+  if (/iPhone/i.test(ua)) return 'iPhone';
+  if (/Android/i.test(ua) && /Mobile/i.test(ua)) return 'Android Phone';
+  if (/Android/i.test(ua)) return 'Android Tablet';
+  return 'Desktop';
+}
+
+// ==============================
+// الجسيمات — Particles
+// ==============================
+function createParticles() {
+  const container = $('particles');
+  for (let i = 0; i < 15; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = 2 + Math.random() * 4;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random() * 100}%;
+      animation-duration:${12 + Math.random() * 18}s;
+      animation-delay:${Math.random() * 15}s;
+    `;
+    container.appendChild(p);
+  }
+}
+
+// ==============================
+// تحميل الخطوط — Font Loading
+// ==============================
+function loadFonts(lang) {
+  const el = $('dynamic-fonts');
+  if (lang === 'ar') {
+    el.href = 'https://fonts.googleapis.com/css2?family=Amiri&family=Tajawal:wght@400;500;700&display=swap';
+  } else if (lang === 'ur') {
+    el.href = 'https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap';
+  }
+  // English uses system fonts — no external font needed, keep current link
+}
+
+// ==============================
+// تبديل اللغة — Language Switch
+// ==============================
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('feedbackLang', lang);
+  const t = T[lang];
+  const isRTL = lang !== 'en';
+
+  // Direction & lang
+  html.setAttribute('lang', lang);
+  html.setAttribute('dir', isRTL ? 'rtl' : 'ltr');
+  document.title = t.pageTitle;
+
+  // Load fonts
+  loadFonts(lang);
+
+  // Active button
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+
+  // Header
+  $('bismillah').textContent = t.bismillah;
+  $('pageTitle').innerHTML = t.title;
+  $('subtitle').textContent = t.subtitle;
+
+  // Form labels
+  $('rateLabel').textContent = t.rateLabel;
+  $('categoryLabel').textContent = t.categoryLabel;
+  $('nameLabel').innerHTML = t.nameLabel + ' <span class="opt">' + t.nameOpt + '</span>';
+  $('emailLabel').innerHTML = t.emailLabel + ' <span class="opt">' + t.emailOpt + '</span>';
+  $('feedbackLabel').innerHTML = t.feedbackLabel + ' <span class="req">' + t.feedbackReq + '</span>';
+
+  // Placeholders
+  $('nameInput').placeholder = t.namePlaceholder;
+  $('emailInput').placeholder = t.emailPlaceholder;
+  $('feedbackInput').placeholder = t.feedbackPlaceholder;
+
+  // Error
+  $('feedbackError').textContent = t.feedbackError;
+
+  // Char counter
+  updateCharCounter();
+
+  // Rating text
+  $('ratingText').textContent = selectedRating ? t.ratings[selectedRating] : '';
+
+  // Categories
+  renderChips(lang);
+
+  // Device
+  $('deviceText').textContent = t.deviceLabel + ': ' + detectDevice();
+
+  // Submit
+  $('submitText').textContent = t.submitBtn;
+
+  // Success
+  $('successTitle').textContent = t.successTitle;
+  $('successMsg').textContent = t.successMsg;
+  $('newFeedbackBtn').textContent = t.newFeedback;
+
+  // Image hint
+  $('imageHint').textContent = t.imageHint;
+
+  // Contact
+  $('contactTitle').textContent = t.contactTitle;
+  document.querySelectorAll('[data-key]').forEach(el => {
+    el.textContent = t[el.dataset.key];
+  });
+
+  // Footer
+  $('devBy').textContent = t.devBy;
+  $('dua').textContent = t.dua;
+  $('downloadText').textContent = t.downloadBtn;
+}
+
+// ==============================
+// رقائق الفئات — Category Chips
+// ==============================
+function renderChips(lang) {
+  const container = $('chips');
+  container.innerHTML = '';
+  T[lang].categories.forEach((label, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'chip' + (selectedCategory === CATEGORY_VALUES[i] ? ' active' : '');
+    btn.textContent = label;
+    btn.onclick = () => {
+      selectedCategory = selectedCategory === CATEGORY_VALUES[i] ? '' : CATEGORY_VALUES[i];
+      renderChips(currentLang);
+    };
+    container.appendChild(btn);
+  });
+}
+
+// ==============================
+// تقييم النجوم — Star Rating
+// ==============================
+function initStars() {
+  const stars = document.querySelectorAll('.star');
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      selectedRating = parseInt(star.dataset.value);
+      updateStars();
+    });
+    star.addEventListener('mouseenter', () => {
+      const val = parseInt(star.dataset.value);
+      stars.forEach((s, i) => s.classList.toggle('active', i < val));
+    });
+  });
+  $('stars').addEventListener('mouseleave', updateStars);
+}
+
+function updateStars() {
+  document.querySelectorAll('.star').forEach((s, i) => {
+    s.classList.toggle('active', i < selectedRating);
+  });
+  $('ratingText').textContent = selectedRating ? T[currentLang].ratings[selectedRating] : '';
+}
+
+// ==============================
+// عدّاد الأحرف — Character Counter
+// ==============================
+function updateCharCounter() {
+  const len = $('feedbackInput').value.length;
+  const counter = $('charCounter');
+  counter.textContent = len + '/2000 ' + T[currentLang].charUnit;
+  counter.className = 'char-counter' + (len > 1800 ? ' limit' : len > 1500 ? ' warn' : '');
+}
+
+// ==============================
+// حماية السبام — Rate Limiting
+// ==============================
+function canSubmit() {
+  const last = localStorage.getItem('lastFeedbackTime');
+  if (!last) return true;
+  return Date.now() - parseInt(last) > RATE_LIMIT_MS;
+}
+
+// ==============================
+// الإشعارات — Toast
+// ==============================
+function showToast(msg, type) {
+  const toast = $('toast');
+  toast.textContent = msg;
+  toast.className = 'toast show' + (type === 'success' ? ' success' : '');
+  setTimeout(() => toast.className = 'toast', 3500);
+}
+
+// ==============================
+// إرسال النموذج — Form Submit
+// ==============================
+async function handleSubmit(e) {
+  e.preventDefault();
+
+  const feedbackVal = $('feedbackInput').value.trim();
+  const field = $('feedbackField');
+
+  // التحقق
+  if (!feedbackVal) {
+    field.classList.add('has-error');
+    $('feedbackInput').focus();
+    return;
+  }
+  field.classList.remove('has-error');
+
+  // حماية السبام
+  if (!canSubmit()) {
+    showToast(T[currentLang].rateLimitMsg);
+    return;
+  }
+
+  // التحقق من رابط Google Apps Script
+  if (!SCRIPT_URL || SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+    showToast(T[currentLang].errorMsg);
+    console.error('Google Apps Script URL is not configured.');
+    return;
+  }
+
+  // تسجيل وقت الإرسال فوراً لمنع الإرسال المتكرر
+  localStorage.setItem('lastFeedbackTime', Date.now().toString());
+
+  // تعطيل الزر وعرض حالة التحميل
+  const btn = $('submitBtn');
+  btn.disabled = true;
+  btn.setAttribute('aria-busy', 'true');
+  $('submitText').innerHTML = '<span class="spinner"></span> ' + T[currentLang].submitting;
+
+  const data = {
+    name: $('nameInput').value.trim(),
+    email: $('emailInput').value.trim(),
+    rating: selectedRating,
+    category: selectedCategory,
+    feedback: feedbackVal,
+    device: detectDevice(),
+    language: currentLang,
+    timestamp: new Date().toISOString()
+  };
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(data)
+    });
+
+    // عرض رسالة النجاح
+    $('successOverlay').classList.add('show');
+
+  } catch (err) {
+    showToast(T[currentLang].errorMsg);
+  } finally {
+    btn.disabled = false;
+    btn.removeAttribute('aria-busy');
+    $('submitText').textContent = T[currentLang].submitBtn;
+  }
+}
+
+// ==============================
+// إعادة التعيين — Reset Form
+// ==============================
+function resetForm() {
+  $('successOverlay').classList.remove('show');
+  $('feedbackForm').reset();
+  selectedRating = 0;
+  selectedCategory = '';
+  updateStars();
+  renderChips(currentLang);
+  updateCharCounter();
+  $('feedbackField').classList.remove('has-error');
+}
+
+// ==============================
+// التهيئة — Initialize
+// ==============================
+function init() {
+  createParticles();
+  initStars();
+  setLanguage(currentLang);
+
+  // أحداث
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+  });
+
+  $('feedbackForm').addEventListener('submit', handleSubmit);
+
+  $('feedbackInput').addEventListener('input', () => {
+    updateCharCounter();
+    $('feedbackField').classList.remove('has-error');
+  });
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>
