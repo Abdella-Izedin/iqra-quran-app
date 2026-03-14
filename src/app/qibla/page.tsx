@@ -144,8 +144,13 @@ export default function QiblaPage() {
         // iOS
         heading = e.webkitCompassHeading;
       } else if (e.alpha !== null && e.alpha !== undefined) {
-        // Android
-        heading = (360 - e.alpha) % 360;
+        // Android - use absolute orientation
+        // If the event is absolute, alpha is relative to true north
+        if (e.absolute) {
+          heading = (360 - e.alpha) % 360;
+        } else {
+          heading = (360 - e.alpha) % 360;
+        }
       } else {
         return;
       }
@@ -164,9 +169,14 @@ export default function QiblaPage() {
       });
     };
 
-    window.addEventListener('deviceorientation', handleOrientation, true);
+    // On Android, use 'deviceorientationabsolute' for true north heading
+    // Fall back to 'deviceorientation' for iOS and other platforms
+    const useAbsolute = 'ondeviceorientationabsolute' in window;
+    const eventName = useAbsolute ? 'deviceorientationabsolute' : 'deviceorientation';
+
+    window.addEventListener(eventName as string, handleOrientation as EventListener, true);
     return () => {
-      window.removeEventListener('deviceorientation', handleOrientation, true);
+      window.removeEventListener(eventName as string, handleOrientation as EventListener, true);
       cancelAnimationFrame(rafId.current);
     };
   }, []);
@@ -201,7 +211,7 @@ export default function QiblaPage() {
     const DOE = DeviceOrientationEvent as unknown as DeviceOrientationEventConstructorIOS;
 
     // التحقق من دعم البوصلة
-    if (!('DeviceOrientationEvent' in window)) {
+    if (!('DeviceOrientationEvent' in window) && !('ondeviceorientationabsolute' in window)) {
       setHasCompass(false);
       return;
     }

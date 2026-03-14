@@ -49,13 +49,13 @@ const TasbeehIcon = () => (
   </svg>
 );
 
-// القبلة - بوصلة مع اتجاه
-const QiblaIcon = () => (
-  <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
-    <path d="M12 7l-5 9h10l-5-9z" />
-  </svg>
-);
+// القبلة - بوصلة مع اتجاه (معطلة مؤقتاً)
+// const QiblaIcon = () => (
+//   <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+//     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+//     <path d="M12 7l-5 9h10l-5-9z" />
+//   </svg>
+// );
 
 // المكتبة - كتب على رف
 const LibraryIcon = () => (
@@ -121,11 +121,11 @@ export default function Home() {
       icon: <TasbeehIcon />,
       title: t('tasbeeh'),
     },
-    {
-      href: '/qibla',
-      icon: <QiblaIcon />,
-      title: t('qibla'),
-    },
+    // {
+    //   href: '/qibla',
+    //   icon: <QiblaIcon />,
+    //   title: t('qibla'),
+    // },
     {
       href: '/reminders',
       icon: <RemindersIcon />,

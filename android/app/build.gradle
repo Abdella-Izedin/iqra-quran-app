@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
     namespace "com.iqra.quran.app"
@@ -18,18 +19,40 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file('../../android/iqra-release.keystore')
-            storePassword 'iqra2026'
+            storeFile file('iqra-release.keystore')
+            storePassword 'IqraApp2026Secure'
             keyAlias 'iqra-key'
-            keyPassword 'iqra2026'
+            keyPassword 'IqraApp2026Secure'
         }
     }
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    // ABI splits disabled - using AAB which handles this automatically
+    // splits {
+    //     abi {
+    //         enable true
+    //         reset()
+    //         include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+    //         universalApk true
+    //     }
+    // }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+    kotlinOptions {
+        jvmTarget = '21'
+    }
+
+    // Compress assets
+    androidResources {
+        noCompress ''  // Don't prevent compression of any file types
     }
 }
 
@@ -49,6 +72,16 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
+}
+
+// Fix Kotlin stdlib duplicate classes issue - use version from root project
+configurations.all {
+    resolutionStrategy {
+        force "org.jetbrains.kotlin:kotlin-stdlib:${rootProject.ext.kotlin_version}"
+        force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.ext.kotlin_version}"
+        force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.ext.kotlin_version}"
+        force "org.jetbrains.kotlin:kotlin-stdlib-common:${rootProject.ext.kotlin_version}"
+    }
 }
 
 apply from: 'capacitor.build.gradle'
